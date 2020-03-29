@@ -17,6 +17,10 @@
 		84516B3D2430A8B600A52136 /* CT_BuilderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B3C2430A8B600A52136 /* CT_BuilderTests.m */; };
 		84516B482430A8B600A52136 /* CT_BuilderUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B472430A8B600A52136 /* CT_BuilderUITests.m */; };
 		84516B572430A8E600A52136 /* CTDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B562430A8E600A52136 /* CTDisplayView.m */; };
+		84516B5A2430CCBD00A52136 /* CTFrameParserConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B592430CCBD00A52136 /* CTFrameParserConfig.m */; };
+		84516B5D2430CEDD00A52136 /* CoreTextData.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B5C2430CEDD00A52136 /* CoreTextData.m */; };
+		84516B602430D00500A52136 /* CTFrameParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B5F2430D00500A52136 /* CTFrameParser.m */; };
+		84516B632430D40000A52136 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B622430D40000A52136 /* UIView+Frame.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +61,14 @@
 		84516B492430A8B600A52136 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84516B552430A8E600A52136 /* CTDisplayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTDisplayView.h; sourceTree = "<group>"; };
 		84516B562430A8E600A52136 /* CTDisplayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTDisplayView.m; sourceTree = "<group>"; };
+		84516B582430CCBD00A52136 /* CTFrameParserConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTFrameParserConfig.h; sourceTree = "<group>"; };
+		84516B592430CCBD00A52136 /* CTFrameParserConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTFrameParserConfig.m; sourceTree = "<group>"; };
+		84516B5B2430CEDD00A52136 /* CoreTextData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreTextData.h; sourceTree = "<group>"; };
+		84516B5C2430CEDD00A52136 /* CoreTextData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreTextData.m; sourceTree = "<group>"; };
+		84516B5E2430D00500A52136 /* CTFrameParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTFrameParser.h; sourceTree = "<group>"; };
+		84516B5F2430D00500A52136 /* CTFrameParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTFrameParser.m; sourceTree = "<group>"; };
+		84516B612430D40000A52136 /* UIView+Frame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
+		84516B622430D40000A52136 /* UIView+Frame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +132,14 @@
 				84516B322430A8B600A52136 /* main.m */,
 				84516B552430A8E600A52136 /* CTDisplayView.h */,
 				84516B562430A8E600A52136 /* CTDisplayView.m */,
+				84516B582430CCBD00A52136 /* CTFrameParserConfig.h */,
+				84516B592430CCBD00A52136 /* CTFrameParserConfig.m */,
+				84516B5B2430CEDD00A52136 /* CoreTextData.h */,
+				84516B5C2430CEDD00A52136 /* CoreTextData.m */,
+				84516B5E2430D00500A52136 /* CTFrameParser.h */,
+				84516B5F2430D00500A52136 /* CTFrameParser.m */,
+				84516B612430D40000A52136 /* UIView+Frame.h */,
+				84516B622430D40000A52136 /* UIView+Frame.m */,
 			);
 			path = CT_Builder;
 			sourceTree = "<group>";
@@ -273,10 +293,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				84516B282430A8B400A52136 /* ViewController.m in Sources */,
+				84516B602430D00500A52136 /* CTFrameParser.m in Sources */,
 				84516B572430A8E600A52136 /* CTDisplayView.m in Sources */,
+				84516B632430D40000A52136 /* UIView+Frame.m in Sources */,
 				84516B222430A8B400A52136 /* AppDelegate.m in Sources */,
+				84516B5D2430CEDD00A52136 /* CoreTextData.m in Sources */,
 				84516B332430A8B600A52136 /* main.m in Sources */,
 				84516B252430A8B400A52136 /* SceneDelegate.m in Sources */,
+				84516B5A2430CCBD00A52136 /* CTFrameParserConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
