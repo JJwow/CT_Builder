@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CTDisplayView : UIView
 
 @property(strong,nonatomic)CoreTextData *data;
-
 @end
 
 NS_ASSUME_NONNULL_END

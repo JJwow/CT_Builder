@@ -7,26 +7,73 @@
 //
 
 #import "CTFrameParser.h"
-
+#import "CoreTextImageData.h"
 @implementation CTFrameParser
+//配置信息格式化
++(NSDictionary *)attributesWithConfig:(CTFrameParserConfig *)config{
+    
+    CGFloat fontSize = config.fontSize;
+    CTFontRef fontRef = CTFontCreateWithName((CFStringRef)@"ArialMT", fontSize, NULL);
+    CGFloat lineSpcing = config.lineSpace;
+    const CFIndex kNumberOfSettings = 3;
+    CTParagraphStyleSetting theSettings[kNumberOfSettings] = {
+        {kCTParagraphStyleSpecifierLineSpacingAdjustment,sizeof(CGFloat),&lineSpcing},
+        {kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(CGFloat),&lineSpcing},
+        {kCTParagraphStyleSpecifierMinimumLineSpacing,sizeof(CGFloat),&lineSpcing},
+    };
+    
+    CTParagraphStyleRef theParagraphRef = CTParagraphStyleCreate(theSettings, kNumberOfSettings);
+    UIColor *textColor = config.textColor;
+   
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    dict[(id)kCTForegroundColorAttributeName] = (id)textColor.CGColor;
+    dict[(id)kCTFontAttributeName] = (__bridge id)fontRef;
+    dict[(id)kCTParagraphStyleAttributeName] = (__bridge id)theParagraphRef;
+    
+    CFRelease(fontRef);
+    CFRelease(theParagraphRef);
+    return dict;
+}
+
 //方法一：用于提供对外的接口，调用方法二实现从一个JSON的模板文件中读取内容，然后调用方法五生成的CoreTextData
 +(CoreTextData *)parseTemplateFile:(NSString *)path config:(CTFrameParserConfig *)config{
     
-    NSAttributedString *content = [self loadTemplateFile:path config:config];
-    return [self parseAttributedContent:content config:config];
+    NSMutableArray *imageArray = [NSMutableArray array];
+    NSAttributedString *content = [self loadTemplateFile:path config:config imageArray:imageArray];
+    CoreTextData *data = [self parseAttributedContent:content config:config];
+    data.imageArray = imageArray;
+    
+    return data;
 }
 
 //方法二：读取JSON文件内容，并且调用方法三获得从NSDcitionay到NSAttributedString的转换结果
-+(NSAttributedString *)loadTemplateFile:(NSString *)path config:(CTFrameParserConfig *)config{
++(NSAttributedString *)loadTemplateFile:(NSString *)path config:(CTFrameParserConfig *)config imageArray:(NSMutableArray *)imageArray{
     NSData *data = [NSData dataWithContentsOfFile:path];
     NSMutableAttributedString *result = [[NSMutableAttributedString alloc] init];
     if (data) {
+        
         NSArray *array = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        
         if ([array isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in array) {
+                
                 NSString *type = dict[@"type"];
+                
                 if ([type isEqualToString:@"txt"]) {
+                    
                     NSAttributedString *as = [self parseAttributeContentFromNSDictionary:dict config:config];
+                    [result appendAttributedString:as];
+                    
+                }else if ([type isEqualToString:@"img"]){
+                    
+                    //创建CoreTextImageData,保存图片到imageArray数组中
+                    CoreTextImageData *imageData = [[CoreTextImageData alloc] init];
+                    imageData.name = dict[@"name"];
+                    imageData.position = [result length];
+                    [imageArray addObject:imageData];
+                    
+                    //创建空白占位符，并且设置它的CTRunDelegate信息
+                    NSAttributedString *as = [self parseImageDataFromNSDictionary:dict config:config];
                     [result appendAttributedString:as];
                 }
             }
@@ -108,29 +155,38 @@
     CFRelease(path);
     return frame;
 }
-//配置信息格式化
-+(NSDictionary *)attributesWithConfig:(CTFrameParserConfig *)config{
+
+#pragma mark - 添加设置CTRunDelegate信息的方法
+static CGFloat ascentCallback(void *ref){
     
-    CGFloat fontSize = config.fontSize;
-    CTFontRef fontRef = CTFontCreateWithName((CFStringRef)@"ArialMT", fontSize, NULL);
-    CGFloat lineSpcing = config.lineSpace;
-    const CFIndex kNumberOfSettings = 3;
-    CTParagraphStyleSetting theSettings[kNumberOfSettings] = {
-        {kCTParagraphStyleSpecifierLineSpacingAdjustment,sizeof(CGFloat),&lineSpcing},
-        {kCTParagraphStyleSpecifierMaximumLineSpacing,sizeof(CGFloat),&lineSpcing},
-        {kCTParagraphStyleSpecifierMinimumLineSpacing,sizeof(CGFloat),&lineSpcing},
-    };
-    
-    CTParagraphStyleRef theParagraphRef = CTParagraphStyleCreate(theSettings, kNumberOfSettings);
-    UIColor *textColor = config.textColor;
-   
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    dict[(id)kCTForegroundColorAttributeName] = (id)textColor.CGColor;
-    dict[(id)kCTFontAttributeName] = (__bridge id)fontRef;
-    dict[(id)kCTParagraphStyleAttributeName] = (__bridge id)theParagraphRef;
-    
-    CFRelease(fontRef);
-    CFRelease(theParagraphRef);
-    return dict;
+    return [(NSNumber *)[(__bridge NSDictionary *)ref objectForKey:@"height"] floatValue];
 }
+static CGFloat descentCallback(void *ref){
+    
+    return 0;
+}
+static CGFloat widthCallback(void *ref){
+    
+    return [(NSNumber *)[(__bridge NSDictionary *)ref objectForKey:@"width"] floatValue];
+}
++(NSAttributedString *)parseImageDataFromNSDictionary:(NSDictionary *)dict config:(CTFrameParserConfig *)config{
+    
+    CTRunDelegateCallbacks callbacks;
+    memset(&callbacks, 0, sizeof(CTRunDelegateCallbacks));
+    callbacks.version = kCTRunDelegateVersion1;
+    callbacks.getAscent = ascentCallback;
+    callbacks.getDescent = descentCallback;
+    callbacks.getWidth = widthCallback;
+    CTRunDelegateRef delegate = CTRunDelegateCreate(&callbacks, (__bridge void *)dict);
+    
+    //使用0xFFFC作为空白占位符
+    unichar objectReplacementChar = 0xFFFC;
+    NSString *content = [NSString stringWithCharacters:&objectReplacementChar length:1];
+    NSDictionary *attributes = [self attributesWithConfig:config];
+    NSMutableAttributedString *space = [[NSMutableAttributedString alloc] initWithString:content attributes:attributes];
+    CFAttributedStringSetAttribute((CFMutableAttributedStringRef)space, CFRangeMake(0, 1), kCTRunDelegateAttributeName, delegate);
+    CFRelease(delegate);
+    return space;
+}
+
 @end
