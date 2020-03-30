@@ -22,12 +22,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 +(CoreTextData *)parseAttributedContent:(NSAttributedString *)content config:(CTFrameParserConfig *)config;
 
+
 /**
- *  配置信息格式化
+ *  给内容设置配置信息
  *
+ *  @param path   模板文件路径
  *  @param config 配置信息
+ *
  */
-+(NSDictionary *)attributesWithConfig:(CTFrameParserConfig *)config;
++(CoreTextData *)parseTemplateFile:(NSString *)path config:(CTFrameParserConfig *)config;
 
 @end
 

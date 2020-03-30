@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A6020582431E51B00250563 /* CoreTextImageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A6020572431E51B00250563 /* CoreTextImageData.m */; };
+		1A60205A2431E6B600250563 /* JsonTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = 1A6020592431E6B600250563 /* JsonTemplate.json */; };
 		84516B222430A8B400A52136 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B212430A8B400A52136 /* AppDelegate.m */; };
 		84516B252430A8B400A52136 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B242430A8B400A52136 /* SceneDelegate.m */; };
 		84516B282430A8B400A52136 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84516B272430A8B400A52136 /* ViewController.m */; };
@@ -41,6 +43,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A6020562431E51B00250563 /* CoreTextImageData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreTextImageData.h; sourceTree = "<group>"; };
+		1A6020572431E51B00250563 /* CoreTextImageData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreTextImageData.m; sourceTree = "<group>"; };
+		1A6020592431E6B600250563 /* JsonTemplate.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = JsonTemplate.json; sourceTree = "<group>"; };
 		84516B1D2430A8B400A52136 /* CT_Builder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CT_Builder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84516B202430A8B400A52136 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		84516B212430A8B400A52136 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -140,6 +145,9 @@
 				84516B5F2430D00500A52136 /* CTFrameParser.m */,
 				84516B612430D40000A52136 /* UIView+Frame.h */,
 				84516B622430D40000A52136 /* UIView+Frame.m */,
+				1A6020562431E51B00250563 /* CoreTextImageData.h */,
+				1A6020572431E51B00250563 /* CoreTextImageData.m */,
+				1A6020592431E6B600250563 /* JsonTemplate.json */,
 			);
 			path = CT_Builder;
 			sourceTree = "<group>";
@@ -268,6 +276,7 @@
 				84516B302430A8B600A52136 /* LaunchScreen.storyboard in Resources */,
 				84516B2D2430A8B600A52136 /* Assets.xcassets in Resources */,
 				84516B2B2430A8B400A52136 /* Main.storyboard in Resources */,
+				1A60205A2431E6B600250563 /* JsonTemplate.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,6 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				84516B282430A8B400A52136 /* ViewController.m in Sources */,
+				1A6020582431E51B00250563 /* CoreTextImageData.m in Sources */,
 				84516B602430D00500A52136 /* CTFrameParser.m in Sources */,
 				84516B572430A8E600A52136 /* CTDisplayView.m in Sources */,
 				84516B632430D40000A52136 /* UIView+Frame.m in Sources */,
