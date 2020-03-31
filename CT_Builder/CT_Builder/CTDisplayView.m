@@ -9,6 +9,8 @@
 #import "CTDisplayView.h"
 #import <CoreText/CoreText.h>
 #import "CoreTextImageData.h"
+@interface CTDisplayView ()<UIGestureRecognizerDelegate>
+@end
 @implementation CTDisplayView
 
 /*
@@ -48,6 +50,15 @@
 //    CFRelease(frame);
 //}
 
+//初始化方法
+-(instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupEvents];
+    }
+    return self;
+}
+
 - (void)drawRect:(CGRect)rect {
     
     [super drawRect:rect];
@@ -68,6 +79,38 @@
             
             UIImage *image = [UIImage imageNamed:imageData.name];
             CGContextDrawImage(context, imageData.imagePostion, image.CGImage);
+        }
+    }
+}
+
+//添加点击手势
+-(void)setupEvents{
+    
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapGestureDetected:)];
+    tapRecognizer.delegate = self;
+    [self addGestureRecognizer:tapRecognizer];
+    self.userInteractionEnabled = YES;
+}
+
+
+//增加UITapGestureRecognizer的回调函数
+-(void)userTapGestureDetected:(UITapGestureRecognizer *)recognizer{
+    
+    CGPoint point = [recognizer locationInView:self];
+    for (CoreTextImageData *imagData in self.data.imageArray) {
+        
+        //翻转坐标系，因为ImageData中的坐标是CoreText的坐标系
+        CGRect imageRect = imagData.imagePostion;
+        CGPoint imagePosition = imageRect.origin;
+        imagePosition.y = self.bounds.size.height - imageRect.origin.y - imageRect.size.height;
+        CGRect rect = CGRectMake(imagePosition.x, imagePosition.y, imageRect.size.width, imageRect.size.height);
+        
+        //检测点击位置Point是否在rect之内
+        if (CGRectContainsPoint(rect, point)) {
+            
+            //在这里处理点击后的逻辑
+            NSLog(@"点击了图片");
+            break;
         }
     }
 }
